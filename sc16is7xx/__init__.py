@@ -73,6 +73,7 @@ class SC16IS7XX:
 
 
         self._reset()
+        self._fifoenable(True)
         self._setbaudrate()
         self._setline()
 
@@ -101,6 +102,17 @@ class SC16IS7XX:
 
     def _write_reg_spi(self, reg, value):
         raise NotImplementedError()
+
+
+    def _fifoenable(self, enable):
+        reg = self._read_reg(self.REG_FCR)
+
+        if enable:
+            reg[0] |= 0x01
+        else:
+            reg[0] &= 0xFE
+
+        self._write_reg(self.REG_FCR, reg)
 
 
     def _reset(self):
