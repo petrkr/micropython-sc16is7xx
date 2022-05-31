@@ -136,7 +136,7 @@ class SC16IS7XX:
 
         # Write new baudrate
         self._write_reg(self.REG_LCR7_DLL, divisor & 0xFF)
-        self._write_reg(self.REG_LCR7_DLH, divisor >> 8 & 0xFF)
+        self._write_reg(self.REG_LCR7_DLH, (divisor >> 8) & 0xFF)
 
         # Return sleep or something like that
         tmplcr[0] &= 0x7F
