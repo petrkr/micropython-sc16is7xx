@@ -13,6 +13,7 @@ __author__ = "Petr Kracik"
 
 class SC16IS7XX:
     DEFAULT_CRYSTAL_FREQ = 14_745_600
+    DEFAULT_I2C_ADDRESS = 0x4D
 
     # Register, use 3 left shift ( << 3) to get actually value for i2c write
     # -- General Registers
@@ -56,8 +57,7 @@ class SC16IS7XX:
     PARITY_FORCE_ZERO = 4
 
 
-    def __init__(self, bus, address=0x4D, debug = False, crystalfreq = DEFAULT_CRYSTAL_FREQ):
-        self._addr = address
+    def __init__(self, bus, address_or_ss=None, debug = False, crystalfreq = DEFAULT_CRYSTAL_FREQ):
         self._bus = bus
         self._crystalfreq = crystalfreq
         self._debug = debug
@@ -65,9 +65,11 @@ class SC16IS7XX:
         if type(self._bus).__name__ == "I2C":
             self._read_reg = self._read_reg_i2c
             self._write_reg = self._write_reg_i2c
+            self._addr = self.DEFAULT_I2C_ADDRESS if address_or_ss is None else address_or_ss
         elif type(self._bus).__name__ == "SPI":
             self._read_reg = self._read_reg_spi
             self._write_reg = self._write_reg_spi
+            self._ss = address_or_ss
         else:
             raise ValueError("Unsupported bus {}".format(type(self._bus).__name__))
 
