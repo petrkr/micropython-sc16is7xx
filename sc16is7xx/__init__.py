@@ -87,8 +87,8 @@ class SC16IS7XX:
         print("{}: {}".format(type(self).__name__, msg))
 
 
-    def _read_reg_i2c(self, reg):
-        val = self._bus.readfrom_mem(self._addr, reg << 3, 1)
+    def _read_reg_i2c(self, reg, count = 1):
+        val = self._bus.readfrom_mem(self._addr, reg << 3, count)
         self._debugmsg("Read i2c reg {}: value {} ({})".format(hex(reg), hex(val), bin(val)))
         return bytearray(val)
 
@@ -98,7 +98,7 @@ class SC16IS7XX:
         self._bus.writeto_mem(self._addr, reg << 3, value)
 
 
-    def _read_reg_spi(self, reg):
+    def _read_reg_spi(self, reg, count = 1):
         raise NotImplementedError()
 
 
