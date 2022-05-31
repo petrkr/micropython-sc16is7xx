@@ -194,3 +194,20 @@ class SC16IS7XX:
 
 
         self._write_reg(self.REG_LCR, reg)
+
+
+    def any(self):
+        reg = self._read_reg(self.REG_RXLVL)
+        return reg[0]
+
+
+    def read(self, data):
+        length = self.any()
+        if length == 0:
+            return
+
+        self._read_reg(self.REG_RHR, length)
+
+
+    def write(self, data):
+        self._write_reg(self.REG_THR, data)
