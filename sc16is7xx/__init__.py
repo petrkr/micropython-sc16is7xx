@@ -113,7 +113,7 @@ class SC16IS7XX:
         if enable:
             reg[0] |= 0x01
         else:
-            reg[0] &= 0xFE
+            reg[0] &= ~0x01
 
         self._write_reg(self.REG_FCR, reg)
 
