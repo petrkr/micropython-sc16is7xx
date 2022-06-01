@@ -50,11 +50,11 @@ class SC16IS7XX:
 
 
     # Parity
-    PARITY_NONE = 0
-    PARITY_ODD = 1
-    PARITY_EVEN = 2
-    PARITY_FORCE_ONE = 3
-    PARITY_FORCE_ZERO = 4
+    PARITY_NONE = None
+    PARITY_ODD = 0
+    PARITY_EVEN = 1
+    PARITY_FORCE_ONE = 2
+    PARITY_FORCE_ZERO = 3
 
 
     def __init__(self, bus, address_or_ss=None, debug = False, crystalfreq = DEFAULT_CRYSTAL_FREQ):
@@ -195,15 +195,6 @@ class SC16IS7XX:
 
 
     def init(self, baudrate=9600, bits=8, parity=None, stop=1):
-        if parity == None:
-            parity = self.PARITY_NONE
-        elif parity == 0:
-            parity = self.PARITY_EVEN
-        elif parity == 1:
-            parity = self.PARITY_ODD
-        else:
-            raise ValueError("Invalid parity {}".format(parity))
-
         self._setline(bits, parity, stop)
         self._setbaudrate(baudrate)
 
