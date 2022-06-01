@@ -6,6 +6,8 @@
 # https://github.com/pbrunnen/SC16IS750
 
 
+from time import ticks_ms
+
 __version__ = "0.0.1"
 __license__ = "MIT"
 __author__ = "Petr Kracik"
@@ -194,7 +196,8 @@ class SC16IS7XX:
         self._write_reg(self.REG_LCR, reg)
 
 
-    def init(self, baudrate=9600, bits=8, parity=None, stop=1):
+    def init(self, baudrate=9600, bits=8, parity=None, stop=1, *, timeout=1000):
+        self._timeout = timeout
         self._setline(bits, parity, stop)
         self._setbaudrate(baudrate)
 
@@ -204,12 +207,21 @@ class SC16IS7XX:
         return reg[0]
 
 
-    def read(self, data):
-        length = self.any()
-        if length == 0:
-            return None
+    def read(self, nbytes=None):
+        bufferlen = 0
 
-        return bytes(self._read_reg(self.REG_RHR, length))
+        start = ticks_ms()
+        while bufferlen == 0:
+            bufferlen = self.any()
+
+            # Timeout reached, return None
+            if ticks_ms() > start + self._timeout:
+                return None
+
+        if nbytes is not None:
+            bufferlen = nbytes if nbytes < bufferlen else bufferlen
+
+        return bytes(self._read_reg(self.REG_RHR, bufferlen))
 
 
     def write(self, data):
