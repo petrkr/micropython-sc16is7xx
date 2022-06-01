@@ -76,8 +76,7 @@ class SC16IS7XX:
 
         self._reset()
         self._fifoenable(True)
-        self._setbaudrate()
-        self._setline()
+        self.init()
 
 
     def _debugmsg(self, msg):
@@ -193,6 +192,20 @@ class SC16IS7XX:
 
 
         self._write_reg(self.REG_LCR, reg)
+
+
+    def init(self, baudrate=9600, bits=8, parity=None, stop=1):
+        if parity == None:
+            parity = self.PARITY_NONE
+        elif parity == 0:
+            parity = self.PARITY_EVEN
+        elif parity == 1:
+            parity = self.PARITY_ODD
+        else:
+            raise ValueError("Invalid parity {}".format(parity))
+
+        self._setline(bits, parity, stop)
+        self._setbaudrate(baudrate)
 
 
     def any(self):
