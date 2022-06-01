@@ -203,9 +203,9 @@ class SC16IS7XX:
     def read(self, data):
         length = self.any()
         if length == 0:
-            return
+            return None
 
-        self._read_reg(self.REG_RHR, length)
+        return self._read_reg(self.REG_RHR, length)
 
 
     def write(self, data):
