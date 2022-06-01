@@ -131,17 +131,16 @@ class SC16IS7XX:
 
         divisor = (self._crystalfreq / prescaler) / (baudrate * 16)
 
-        # Put device to sleep (or something like that to be able change baudrate)
         tmplcr = self._read_reg(self.REG_LCR)
-        tmplcr[0] |= 0x80
+
+        tmplcr[0] |= 0x80  # Divisor Latch enable (bit 7)
         self._write_reg(self.REG_LCR, tmplcr)
 
         # Write new baudrate
         self._write_reg(self.REG_LCR7_DLL, divisor & 0xFF)
         self._write_reg(self.REG_LCR7_DLH, (divisor >> 8) & 0xFF)
 
-        # Return sleep or something like that
-        tmplcr[0] &= 0x7F
+        tmplcr[0] &= ~0x80  # Divisor Latch disable (bit 7)
         self._write_reg(self.REG_LCR, tmplcr)
 
         actual_baudrate = (self._crystalfreq/prescaler)/(16*divisor)
