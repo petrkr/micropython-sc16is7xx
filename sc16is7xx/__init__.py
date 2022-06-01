@@ -133,7 +133,7 @@ class SC16IS7XX:
 
         tmplcr = self._read_reg(self.REG_LCR)
 
-        tmplcr[0] |= 0x80  # Divisor Latch enable (bit 7)
+        tmplcr[0] |= 0x80  # Divisor Latch enable (bit 7) - Allow access to DLL and DHL registers
         self._write_reg(self.REG_LCR, tmplcr)
 
         # Write new baudrate
