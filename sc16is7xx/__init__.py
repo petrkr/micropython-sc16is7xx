@@ -57,7 +57,7 @@ class SC16IS7XX:
     PARITY_FORCE_ZERO = 3
 
 
-    def __init__(self, bus, address_or_ss=None, debug = False, crystalfreq = DEFAULT_CRYSTAL_FREQ):
+    def __init__(self, bus, address_or_ss=None, baudrate=9600, debug = False, crystalfreq = DEFAULT_CRYSTAL_FREQ):
         self._bus = bus
         self._crystalfreq = crystalfreq
         self._debug = debug
@@ -76,7 +76,7 @@ class SC16IS7XX:
 
         self._reset()
         self._fifoenable(True)
-        self.init()
+        self.init(baudrate)
 
 
     def _debugmsg(self, msg):
