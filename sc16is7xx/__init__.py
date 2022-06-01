@@ -157,14 +157,6 @@ class SC16IS7XX:
         reg = self._read_reg(self.REG_LCR)
         reg[0] &= 0xC0  # Clear actual settings
 
-        if bits < 5 or bits > 8:
-            raise ValueError("Error data length {} is not supported. Supported 5, 6, 7, 8".format(bits))
-
-
-        if stopbits not in [1, 1.5, 2]:
-            raise ValueError("Stop bits {} is not supported. Supported 1, 1.5, 2".format(stopbits))
-
-
         if bits == 5:
             reg[0] |= 0x00
         elif bits == 6:
@@ -173,6 +165,12 @@ class SC16IS7XX:
             reg[0] |= 0x02
         elif bits == 8:
             reg[0] |= 0x03
+        else:
+            raise ValueError("Error data length {} is not supported. Supported 5, 6, 7, 8".format(bits))
+
+
+        if stopbits not in [1, 1.5, 2]:
+            raise ValueError("Stop bits {} is not supported. Supported 1, 1.5, 2".format(stopbits))
 
 
         if stopbits > 1:
