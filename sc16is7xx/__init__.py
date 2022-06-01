@@ -224,5 +224,21 @@ class SC16IS7XX:
         return bytes(self._read_reg(self.REG_RHR, bufferlen))
 
 
+    def readinto(self, buf, nbytes=None):
+        raise NotImplementedError()
+
+
+    def readline(self):
+        raise NotImplementedError()
+
+
+    def sendbreak(self):
+        raise NotImplementedError()
+
+
+    def irq(self, prio, handler):
+        raise NotImplementedError()
+
+
     def write(self, data):
         self._write_reg(self.REG_THR, data)
