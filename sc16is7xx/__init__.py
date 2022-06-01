@@ -205,7 +205,7 @@ class SC16IS7XX:
         if length == 0:
             return None
 
-        return self._read_reg(self.REG_RHR, length)
+        return bytes(self._read_reg(self.REG_RHR, length))
 
 
     def write(self, data):
